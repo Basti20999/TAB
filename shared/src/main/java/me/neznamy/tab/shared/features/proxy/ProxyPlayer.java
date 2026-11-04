@@ -108,7 +108,7 @@ public class ProxyPlayer {
      */
     @NotNull
     public TabList.Entry asEntry() {
-        return new TabList.Entry(uniqueId, nickname, skin, true, 0, 0, tabFormat == null ? null : tabFormat.getFormatComponent(), 0, true);
+        return new TabList.Entry(tablistId, nickname, skin, true, 0, 0, tabFormat == null ? null : tabFormat.getFormatComponent(), 0, true);
     }
 
     /**

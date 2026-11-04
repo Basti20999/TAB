@@ -241,6 +241,14 @@ mysql:
   useSSL: true
 
 # https://github.com/NEZNAMY/TAB/wiki/Feature-guide:-Multi-server-support
+# Direct EU/USA backend synchronization (no proxy plugin required).
+# Set a DIFFERENT server-name on each backend, e.g. eu and usa.
+# Requires proxy-support.enabled: true, type: REDIS, and the same Redis URL/channel on both.
+# Enables global-playerlist automatically; disable layout and per-world-playerlist.
+server-name: "N/A"
+backend-sync:
+  enabled: false
+
 proxy-support:
   enabled: true
   channel-name-suffix: "custom"

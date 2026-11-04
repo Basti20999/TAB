@@ -102,7 +102,7 @@ public class PlayerListProxyPlayerData extends ProxyMessage {
         target.setTabFormat(this);
         if (target.getConnectionState() == ProxyPlayer.ConnectionState.CONNECTED) {
             if (disabled) {
-                if (!oldData.disabled) {
+                if (oldData == null || !oldData.disabled) {
                     for (TabPlayer viewer : TAB.getInstance().getOnlinePlayers()) {
                         viewer.getTabList().updateDisplayName(target.getTablistId(), null);
                     }

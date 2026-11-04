@@ -3,6 +3,7 @@ package me.neznamy.tab.shared.features.proxy.message;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import lombok.ToString;
+import lombok.Getter;
 import me.neznamy.tab.shared.TAB;
 import me.neznamy.tab.shared.TabConstants;
 import me.neznamy.tab.shared.data.Server;
@@ -20,6 +21,7 @@ import java.util.UUID;
  * Message sent by another proxy when a player joins.
  */
 @ToString
+@Getter
 public class PlayerJoin extends ProxyMessage {
 
     @NotNull private final UUID uniqueId;

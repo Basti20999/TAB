@@ -63,6 +63,7 @@ public class Config {
     private final boolean preventSpectatorEffect = config.getBoolean("prevent-spectator-effect.enabled", false);
     private final boolean bukkitPermissions = TAB.getInstance().getPlatform().isProxy() && config.getBoolean("use-bukkit-permissions-manager", false);
     private final boolean debugMode = config.getBoolean("debug", false);
+    private final boolean backendSync = !TAB.getInstance().getPlatform().isProxy() && config.getBoolean("backend-sync.enabled", false);
     private final boolean onlineUuidInTabList = config.getBoolean("use-online-uuid-in-tablist", true);
     private final boolean pipelineInjection = getSecretOption("pipeline-injection", true);
     @NotNull private final String serverName = getSecretOption("server-name", "N/A");
@@ -110,6 +111,19 @@ public class Config {
         if (config.getBoolean("tablist-name-formatting.enabled", false)) tablistFormatting = TablistFormattingConfiguration.fromSection(config.getConfigurationSection("tablist-name-formatting"));
         if (config.getBoolean("scoreboard-teams.enabled", false)) teams = TeamConfiguration.fromSection(config.getConfigurationSection("scoreboard-teams"));
         if (config.getBoolean("proxy-support.enabled", true)) proxySupport = ProxySupportConfiguration.fromSection(config.getConfigurationSection("proxy-support"));
+
+        if (backendSync) {
+            if (serverName.trim().isEmpty() || serverName.equals("N/A")) {
+                throw new IllegalArgumentException("Backend sync requires a unique server-name (for example eu or usa).");
+            }
+            if (proxySupport == null || !proxySupport.getType().equals("REDIS")) {
+                throw new IllegalArgumentException("Backend sync requires proxy-support.enabled: true and proxy-support.type: REDIS. Configure these on the backend only.");
+            }
+            if (layout != null || perWorldPlayerList != null) {
+                throw new IllegalArgumentException("Backend sync requires layout.enabled and per-world-playerlist.enabled to be false.");
+            }
+            globalPlayerList = GlobalPlayerListConfiguration.fromSection(config.getConfigurationSection("global-playerlist"));
+        }
 
         if (layout != null) {
             if (perWorldPlayerList != null) {

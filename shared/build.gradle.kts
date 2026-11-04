@@ -3,6 +3,7 @@ plugins {
 }
 
 dependencies {
+    testImplementation("junit:junit:4.13.2")
     api(projects.api)
     api("org.yaml:snakeyaml:2.0")
     api("com.github.NEZNAMY:yamlassist:1.0.8")
@@ -30,6 +31,10 @@ dependencies {
         exclude("org.slf4j", "slf4j-api")
     }
     implementation("com.saicone.delivery4j:extension-guava:1.1.1")
+}
+
+tasks.test {
+    useJUnit()
 }
 
 sourceSets.main {

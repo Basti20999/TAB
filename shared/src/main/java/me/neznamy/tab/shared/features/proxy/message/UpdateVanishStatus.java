@@ -4,6 +4,7 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import lombok.AllArgsConstructor;
 import lombok.ToString;
+import lombok.Getter;
 import me.neznamy.tab.shared.TAB;
 import me.neznamy.tab.shared.features.proxy.ProxyPlayer;
 import me.neznamy.tab.shared.features.proxy.ProxySupport;
@@ -17,6 +18,7 @@ import java.util.UUID;
  */
 @AllArgsConstructor
 @ToString
+@Getter
 public class UpdateVanishStatus extends ProxyMessage {
 
     @NotNull private final UUID playerId;

@@ -24,6 +24,7 @@ import me.neznamy.tab.shared.features.playerlistobjective.YellowNumber;
 import me.neznamy.tab.shared.features.proxy.ProxyMessengerSupport;
 import me.neznamy.tab.shared.features.proxy.ProxyPlayer;
 import me.neznamy.tab.shared.features.proxy.ProxySupport;
+import me.neznamy.tab.shared.features.proxy.BackendSyncSupport;
 import me.neznamy.tab.shared.features.proxy.ProxySupportConfiguration;
 import me.neznamy.tab.shared.features.scoreboard.ScoreboardManagerImpl;
 import me.neznamy.tab.shared.features.sorting.Sorting;
@@ -561,7 +562,9 @@ public class FeatureManager {
         if (config.getProxySupport() != null) {
             ProxySupportConfiguration configuration = config.getProxySupport();
             ProxySupport proxy = null;
-            if (configuration.getType().equalsIgnoreCase("PLUGIN")) {
+            if (config.isBackendSync()) {
+                proxy = new BackendSyncSupport(configuration);
+            } else if (configuration.getType().equalsIgnoreCase("PLUGIN")) {
                 proxy = TAB.getInstance().getPlatform().getProxySupport(configuration.getPluginName(), configuration.getChannelName());
             } else if (configuration.getType().equalsIgnoreCase("REDIS")) {
                 proxy = new ProxyMessengerSupport("Redis", configuration.getChannelName(), () -> RedisBroker.of(configuration.getRedisUrl()));

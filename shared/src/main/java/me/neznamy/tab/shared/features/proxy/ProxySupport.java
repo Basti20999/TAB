@@ -93,13 +93,18 @@ public abstract class ProxySupport extends TabFeature implements JoinListener, Q
         }
 
         // Queue the task to make sure it does not execute before plugin fully loads, causing NPE
-        TAB.getInstance().getCpu().runMeasuredTask(getFeatureName(), CpuUsageCategory.PROXY_MESSAGE, () -> {
-            if (proxyMessage.getCustomThread() != null) {
-                proxyMessage.getCustomThread().execute(new TimedCaughtTask(TAB.getInstance().getCpu(), () -> proxyMessage.process(this), getFeatureName(), CpuUsageCategory.PROXY_MESSAGE));
-            } else {
-                proxyMessage.process(this);
-            }
-        });
+        TAB.getInstance().getCpu().runMeasuredTask(getFeatureName(), CpuUsageCategory.PROXY_MESSAGE,
+                () -> processIncoming(proxy, proxyMessage));
+    }
+
+    /** Processes a message on TAB's processing thread, retaining its sender identity. */
+    protected void processIncoming(@NotNull String sender, @NotNull ProxyMessage message) {
+        if (message.getCustomThread() != null) {
+            message.getCustomThread().execute(new TimedCaughtTask(TAB.getInstance().getCpu(),
+                    () -> message.process(this), getFeatureName(), CpuUsageCategory.PROXY_MESSAGE));
+        } else {
+            message.process(this);
+        }
     }
 
     /**
