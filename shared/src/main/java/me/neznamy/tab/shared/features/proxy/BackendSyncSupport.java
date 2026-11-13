@@ -19,6 +19,12 @@ public class BackendSyncSupport extends ProxyMessengerSupport {
 
     private final BackendRosterTracker roster = new BackendRosterTracker();
     private volatile boolean active;
+    private volatile long lastReceived;
+
+    public long secondsSinceLastMessage() {
+        long received = lastReceived;
+        return received == 0 ? -1 : TimeUnit.NANOSECONDS.toSeconds(System.nanoTime() - received);
+    }
 
     public BackendSyncSupport(@NotNull ProxySupportConfiguration configuration) {
         // Never mix backend rosters with a proxy installation or VincentCore's channels.
@@ -74,6 +80,7 @@ public class BackendSyncSupport extends ProxyMessengerSupport {
 
     private void receive(String sender, ProxyMessage message) {
         if (!active) return;
+        lastReceived = System.nanoTime();
         roster.heartbeat(sender, System.nanoTime());
         if (message instanceof BackendRoster) {
             Set<UUID> present = new HashSet<>();

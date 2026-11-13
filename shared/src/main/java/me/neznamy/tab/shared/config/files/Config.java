@@ -122,7 +122,7 @@ public class Config {
             if (layout != null || perWorldPlayerList != null) {
                 throw new IllegalArgumentException("Backend sync requires layout.enabled and per-world-playerlist.enabled to be false.");
             }
-            globalPlayerList = GlobalPlayerListConfiguration.fromSection(config.getConfigurationSection("global-playerlist"));
+            if (globalPlayerList == null) globalPlayerList = GlobalPlayerListConfiguration.fromSection(config.getConfigurationSection("global-playerlist"));
         }
 
         if (layout != null) {
